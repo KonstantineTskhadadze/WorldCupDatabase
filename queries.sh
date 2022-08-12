@@ -29,12 +29,13 @@ echo -e "\nWinner of the 2018 tournament team name:"
 echo "$($PSQL "SELECT name FROM games INNER JOIN teams ON winner_id=team_id WHERE year=2018 GROUP BY name ORDER BY COUNT(winner_id) DESC LIMIT 1")"
 
 echo -e "\nList of teams who played in the 2014 'Eighth-Final' round:"
-echo "$($PSQL "SELECT name FROM games INNER JOIN teams ON games.winner_id=teams.team_id OR games.opponent_id=teams.team_id WHERE round='Eighth-Final' AND year=2014 ORDER BY name")"
+echo "$($PSQL "SELECT name FROM games INNER JOIN teams ON winner_id=team_id WHERE year=2014 AND round='Eighth-Final' UNION ALL SELECT name FROM games INNER JOIN teams ON opponent_id=team_id WHERE year=2014 AND round='Eighth-Final' GROUP BY name ORDER BY name")"
 
 echo -e "\nList of unique winning team names in the whole data set:"
-echo "$($PSQL "SELECT year, name FROM games INNER JOIN teams ON winner_id=team_id GROUP BY year, name ORDER BY COUNT(*), year OFFSET 14")"
+echo "$($PSQL "SELECT name FROM games INNER JOIN teams ON winner_id=team_id GROUP BY name ORDER BY name")"
 
 echo -e "\nYear and team name of all the champions:"
+echo "$($PSQL "SELECT year, name FROM games INNER JOIN teams ON winner_id=team_id WHERE round='Final' GROUP BY year, name")"
 
 echo -e "\nList of teams that start with 'Co':"
 echo "$($PSQL "SELECT name FROM teams WHERE name LIKE 'Co%'")"
