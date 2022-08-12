@@ -26,7 +26,7 @@ echo -e "\nNumber of games where the winning team scored more than two goals:"
 echo "$($PSQL "SELECT COUNT(*) FROM games WHERE winner_goals > 2")"
 
 echo -e "\nWinner of the 2018 tournament team name:"
-echo "$($PSQL "SELECT name FROM games INNER JOIN teams ON winner_id=team_id WHERE year=2018 GROUP BY name ORDER BY COUNT(winner_id) DESC LIMIT 1")"
+echo "$($PSQL "SELECT name FROM games INNER JOIN teams ON winner_id=team_id  WHERE year = 2018 AND round='Final'")"
 
 echo -e "\nList of teams who played in the 2014 'Eighth-Final' round:"
 echo "$($PSQL "SELECT name FROM games INNER JOIN teams ON winner_id=team_id WHERE year=2014 AND round='Eighth-Final' UNION ALL SELECT name FROM games INNER JOIN teams ON opponent_id=team_id WHERE year=2014 AND round='Eighth-Final' GROUP BY name ORDER BY name")"
